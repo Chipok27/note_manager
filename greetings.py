@@ -9,9 +9,9 @@ status = 0
 created_date = '10-11-2024'
 issue_date = '10-12-2024'
 
-print('Имя пользователя', username)
-print('Заголовок заметки', title)
-print('Имя пользователя', content)
+print('Имя пользователя:', username)
+print('Заголовок заметки:', title)
+print('Описание заметки:', content)
 if status == 0:
     print('Статус заметки:', 'ожидает')
 if status == 1:

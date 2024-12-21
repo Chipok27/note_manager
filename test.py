@@ -6,4 +6,3 @@ month = 2  # int(input())
 
 days = monthrange(current_year, month)[1]
 print(days)
-

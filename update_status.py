@@ -52,7 +52,7 @@ for note in note_list:
     username = note[0]
     print('Имя пользователя:', username)
     print('Заголовки Заметки :')
-    for title in note[1] :
+    for title in note[1]:
         print('- ', title)
     content = note[2]
     print('Описание заметки:', content)

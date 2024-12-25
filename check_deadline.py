@@ -1,4 +1,4 @@
-# Grade 1. Этап 2: Задание 2
+# Grade 1. Этап 2: Задание 2 (check_dealine)
 # ЗАМЕТКИ
 
 import random, datetime
@@ -74,6 +74,7 @@ while True:
     note['content'] = input(
         'Введите описание заметки (нажмите ENTER для случайной генерации): ') or 'Текст заметки №' + str(
         random.randint(1, 100))
+
     # 0 - ожидает, 1 - в работе, 2 - готово
     while True:
         status = input(
@@ -83,6 +84,7 @@ while True:
         else:
             break
     note['status'] = status
+
     print('Введите дату создания заметки.')
     note['created_date'] = input_date()
 
@@ -111,6 +113,11 @@ for note in note_list:
         print('Текущий статус заметки:', 'готово')
     print('Дата создания заметки:', note['created_date'][:-5])
     print('Дата актуальности заметки', note['issue_date'][:-5])
+
+    # Проверка просроченности заметки
+    if datetime.datetime.now().strptime(note['issue_date'], '%d-%m-%Y') < datetime.datetime.now():
+        print('Данная заметка просрочена!')
+
     print('============Конец заметки===========')
     status_change = input('Требуется изменение статуса Заметки? (Д|Н) :')
     if status_change in ['д', 'Д']:

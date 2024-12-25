@@ -3,6 +3,52 @@
 
 import random, datetime
 
+
+def input_date():  # Функция ввода даты с проверкой
+    date_valid = False
+    while not date_valid:
+        date_ = input(
+            'Введите дату в формате ДД-ММ-ГГГГ (или нажмите ENTER для ввода текущей даты) : ') or datetime.datetime.now().strftime(
+            '%d-%m-%Y')
+        try:
+            year = int(date_[6:10])
+            month = int(date_[3:5])
+            day = int(date_[0:2])
+            if year in range(1, 10000):  # год в пределах от 1 до 9999
+                if month in (1, 3, 5, 7, 8, 10, 12):  # месяцы с 31 днём
+                    if day in range(1, 32):
+                        date_valid = True
+                    else:
+                        date_valid = False
+                elif month in (4, 6, 9, 11):  # месяцы с 30 днями
+                    if int(created_date[0:2]) in range(1, 31):
+                        date_valid = True
+                    else:
+                        date_valid = False
+                elif month == 2:  # февраль
+                    if year % 400 == 0 or (year % 4 == 0 and not year % 100 == 0):  # проверка високосного года
+                        if int(created_date[0:2]) in range(1, 30):
+                            date_valid = True
+                        else:
+                            date_valid = False
+                    else:
+                        if int(created_date[0:2]) in range(1, 29):
+                            date_valid = True
+                        else:
+                            date_valid = False
+                else:
+                    print('Не правильно ввели номер месяца за пределами диапазона 01..12:', month)
+                    date_valid = False
+            else:
+                print('Не правильно ввели номер года за пределами диапазона 0001..9999:', year)
+                date_valid = False
+            if not date_valid:
+                print('Ошибка ввода даты!')
+        except:
+            print('Ошибка преобразования введённой даты. Используйте при вводе предложенный формат.')
+    return date_
+
+
 note_list = []
 
 while True:
@@ -37,52 +83,11 @@ while True:
         else:
             break
     note['status'] = status
-    date_valid = False
-    while not date_valid:
-        created_date = input(
-            'Введите дату создания заметки в формате ДД-ММ-ГГГГ (или нажмите ENTER для ввода текущей даты) : ') or datetime.datetime.now().strftime(
-            '%d-%m-%Y')
-        try:
-            year = int(created_date[6:10])
-            month = int(created_date[3:5])
-            day = int(created_date[0:2])
-            if year in range(1, 10000):  # год в пределах от 1 до 9999
-                if month in (1, 3, 5, 7, 8, 10, 12):  # месяцы с 31 днём
-                    if day in range(1, 32):
-                        date_valid = True
-                    else:
-                        date_valid = False
-                elif month in (4, 6, 9, 11):  # месяцы с 30 днями
-                    if int(created_date[0:2]) in range(1, 31):
-                        date_valid = True
-                    else:
-                        date_valid = False
-                elif month == 2:  # февраль
-                    if year % 400 == 0 or (year % 4 == 0 and not year % 100 == 0):  # проверка високосного года
-                        if int(created_date[0:2]) in range(1, 30):
-                            date_valid = True
-                        else:
-                            date_valid = False
-                    else:
-                        if int(created_date[0:2]) in range(1, 29):
-                            date_valid = True
-                        else:
-                            date_valid = False
-                else:
-                    print('Не правильно ввели номер месяца за пределами диапазона 01..12:', month)
-                    date_valid = False
-            else:
-                print('Не правильно ввели номер года за пределами диапазона 0001..9999:', year)
-                date_valid = False
-            if not date_valid:
-                print('Ошибка ввода даты!')
-        except:
-            print('Ошибка преобразования введённой даты. Используйте при вводе предложенный формат.')
-    note['created_date'] = created_date
+    print('Введите дату создания заметки.')
+    note['created_date'] = input_date()
 
-
-    issue_date = input('Введите дату актуальности заметки в формате ДД-ММ-ГГГГ: ') or '31-12-2024'
-    note['issue_date'] = issue_date
+    print('Введите дату актуальности заметки.')
+    note['issue_date'] = input_date()
 
     note_list.append(note)
 

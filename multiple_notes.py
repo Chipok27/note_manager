@@ -1,4 +1,4 @@
-# Grade 1. Этап 2: Задание 2 (check_dealine)
+# Grade 1. Этап 2: Задание 4
 # ЗАМЕТКИ
 
 import random, datetime
@@ -59,6 +59,7 @@ while True:
             'status': '0',  # 0 - ожидает, 1 - в работе, 2 - готово
             'created_date': '01-01-1999',
             'issue_date': '31-12-2024'}
+
     note['username'] = input('Введите имя пользователя (нажмите ENTER для случайной генерации): ') or 'Name № ' + str(
         random.randint(1, 100))
     title_list = []

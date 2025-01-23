@@ -116,6 +116,7 @@ def create_note():
         except:
             print('Пожалуйста, введите статус из предложенных вариантов в виде числа!')
             continue
+
         if status not in range(3):
             print('Пожалуйста, выберите статус из предложенных вариантов!')
         else:
@@ -142,29 +143,40 @@ def show_one_note(note: dict):
     print('Текущий статус заметки : ', status_list[note['status']])
     print('Дата создания заметки : ', note['created_date'][:-5])
     print('Дата актуальности заметки : ', note['issue_date'][:-5])
-    input('Нажмите ENTER для продолжения.')
 
 
 # Процедура вывода Заметок из Списка заметок
-def display_notes(note_list: list):
+def display_notes(note_list: list, do_pause=False, do_change=False, do_status=False):
     for note in note_list:
         print('===========Начало заметки===========')
         show_one_note(note)
-        choise = input('Введите 0, если необходимо изменить Заметку или ENTER - для продолжения! : ')
-        if choise == '0':
-            note = update_note(note)
+
+        # Запрос на паузы между Заметками при выводе
+        if do_pause:
+            input('Нажмите ENTER для продолжения.')
+
+        # Запрос на изменение Заметок
+        if do_change:
+            choise = input('Введите 0, если необходимо изменить Заметку или ENTER - для продолжения! : ')
+            if choise == '0':
+                note = update_note(note)
 
         # Проверка просроченности заметки
-        # status_change = input('Требуется изменение статуса Заметки? (Д|Н) :')
-        # if status_change in ['д', 'Д']:
-        #     while True:
-        #         status = input(
-        #             'Введите новый статус заметки (0 - ожидает, 1 - в работе, 2 - готово, нажмите ENTER для статуса 0): ') or '0'
-        #         if status not in ('0', '1', '2'):
-        #             print('Пожалуйста, выберите статус из предложенных вариантов!')
-        #         else:
-        #             break
-        #     note['status'] = status
+        if do_status:
+            status_change = input('Требуется изменение статуса Заметки? (Д|Н) :')
+            if status_change in ['д', 'Д']:
+                while True:
+                    try:
+                        status = int(input(
+                            'Введите новый статус заметки (0 - ожидает, 1 - в работе, 2 - готово, нажмите ENTER для статуса 0): ') or 0)
+                        if status not in range(3):
+                            print('Пожалуйста, выберите статус из предложенных вариантов!')
+                        else:
+                            break
+                    except:
+                        print('Пожалуйста, введите число!')
+            note['status'] = status
+
     if note_list == []:
         print('Список Заметок пуст!')
         input('Нажмите ENTER для продолжения.')
@@ -277,6 +289,31 @@ def search_notes(note_list: list, keyword=None, status=None):
 
 # инициализация нового (пустого) списка Заметок
 note_list = []
+# инициализация предзаполненного списка Заметок
+note_list = [{'username': 'Максим',
+              'title': ['Программирование', 'Тестирование'],
+              'content': 'Решить и проверить задачу',
+              'status': 1,
+              'created_date': '22-01-2025',
+              'issue_date': '31-01-2025'},
+             {'username': 'Алекс',
+              'title': ['Тестирование'],
+              'content': 'Проверить задачу Максима',
+              'status': 0,
+              'created_date': '23-01-2025',
+              'issue_date': '01-02-2025'},
+             {'username': 'Ирина',
+              'title': ['Подготовить задание', 'Разработать тесты'],
+              'content': 'Придумать задачу и несколько тестов для проверки её решения',
+              'status': 2,
+              'created_date': '28-12-2024',
+              'issue_date': '20-01-2025'},
+             {'username': 'Игнат',
+              'title': ['Программирование'],
+              'content': 'Написать программу решения задачи',
+              'status': 2,
+              'created_date': '03-01-2025',
+              'issue_date': '31-01-2025'}]
 while True:
     menu = select_menu()
     if menu == 1:  # Добавить Заметку
@@ -294,3 +331,13 @@ while True:
         display_notes(notes)
     elif menu == 0:  # Выход из программы
         break
+
+# Примеры вызова функции поиска Заметки
+print('Вывод заметок по ключевому слову "тест" : ')
+display_notes(search_notes(note_list, 'тест'), True)
+
+print('Вывод заметок со статусом "в процессе" : ')
+display_notes(search_notes(note_list, status='в процессе'), True)
+
+print('Вывод заметок по ключевому слову "тест" и статусу "выполнено" : ')
+display_notes(search_notes(note_list, 'тест', 'выполнена'), True)
